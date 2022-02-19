@@ -2,12 +2,6 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 
 const Header = ({title, showTaskForm, onToggleAddTask}) => {
-    // let a = 0;
-    // const onClick = () => {
-    //     console.log('Click from Header', ++a);
-    //     onToggleAddTask(showTaskForm);  
-    // }
-
     return ( 
         <header className='header'>
             <h1>{title}</h1>
