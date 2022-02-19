@@ -41,6 +41,12 @@
       "day": "Every chance",
       "reminder": false,
       "id": 9
+    },
+    {
+      "text": "test",
+      "day": "today",
+      "reminder": false,
+      "id": 10
     }
   ]
 }
