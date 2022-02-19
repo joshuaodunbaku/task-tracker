@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AddTask from './components/AddTask';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
@@ -6,30 +6,37 @@ import Tasks from './components/Tasks';
 function App() {
   // const name = 'Bobby';
   // const x = false;
+  const [loading, setLoading] = useState(true);
   const [showTaskForm, setShowTaskForm] = useState(false);
-  const [tasks, setTask] = useState([
-    {
-        id: 1,
-        text: 'Doctors ApAddpointment',
-        day: 'Feb 5th at 2:30pm',
-        reminder: true,
-    },
-    {
-        id: 2,
-        text: 'Meeting at School',
-        day: 'Feb 6th at 1:30pm',
-        reminder: true,
-    },
-    {
-        id: 3,
-        text: 'Food Shopping',
-        day: 'Feb 5th at 2:30pm',
-        reminder: false,
-    },
-  ])
+  const [tasks, setTask] = useState([]);
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const taskFromServer = await fetchTasks();
+      // setTask(taskFromServer);
+      setLoading(false);
+    }
+    getTasks();
+
+  }, [])
+  // Calling the Json-server Database
+  // Fetch Tasks
+  const fetchTasks = async () => {
+    const res = await fetch("http://localhost:5000/tasks");
+    // setLoading(false);
+    const data = await res.json();
+    console.log(data);
+    return data;
+  }
+  
+
   // D e l e t e   T a s k
-  const deleteTask = (thatTaskId) => {
+  const deleteTask = async (thatTaskId) => {
     // console.log("delete", id)
+    await fetch(`http://localhost:5000/tasks/${thatTaskId}`, {
+      method: "DELETE",
+    })
+
     setTask(tasks.filter(elem => elem.id !== thatTaskId))
   }
   
@@ -44,14 +51,24 @@ function App() {
   }
   
   // A d d   T a s k
-  const addTask = (task) => {
+  const addTask = async (task) => {
+    const res = await fetch("http://localhost:5000/tasks", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(task),
+    })
+    const data = await res.json();
+    setTask([...tasks, data])
+
     console.log(task);
     // const {setText, setDay, setRemider} = {...task};
 
-    // C R E A T I N G  AN ID FOR THE NEW TASK
-    const id = tasks.length + 1;
-    // A D D I N G   THE TASK TO THE STATE
-    setTask([...tasks, {...task, id}]);
+    // // C R E A T I N G  AN ID FOR THE NEW TASK
+    // const id = Math.floor(Math.random() * 10000) + 1;
+    // // A D D I N G   THE TASK TO THE STATE
+    // setTask([...tasks, {...task, id}]);
   }
   
   // T o g g l e   a d d   b u t t o n
@@ -69,7 +86,7 @@ function App() {
 
       {showTaskForm && <AddTask onAdd={addTask} onToggleAddTask={onToggleAddTask} showTaskForm={showTaskForm}/>}
       
-      <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/>
+      {loading ? <div className="spinner-border"></div> : <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} loading={loading}/>}
     </div>
   );
 }
