@@ -36,7 +36,6 @@ const AddTask = ({onAdd, onToggleAddTask, showTaskForm}) => {
             <label htmlFor="">Set Reminder</label>
             <input type="checkbox" checked={reminder} value={reminder} onChange={(e) => setReminder(e.currentTarget.checked)} />
         </div>
-        {/* <input className="btn btn-block" type="submit" value="Save" /> */}
         <Button text="Save" className="btn btn-block" />
     </form>
   )

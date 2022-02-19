@@ -4,8 +4,6 @@ import Header from './components/Header';
 import Tasks from './components/Tasks';
 
 function App() {
-  // const name = 'Bobby';
-  // const x = false;
   const [loading, setLoading] = useState(true);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [tasks, setTask] = useState([]);
@@ -13,7 +11,6 @@ function App() {
   useEffect(() => {
     const getTasks = async () => {
       const taskFromServer = await fetchTasks();
-      // setTask(taskFromServer);
       setLoading(false);
     }
     getTasks();
@@ -23,16 +20,13 @@ function App() {
   // Fetch Tasks
   const fetchTasks = async () => {
     const res = await fetch("http://localhost:5000/tasks");
-    // setLoading(false);
     const data = await res.json();
-    console.log(data);
     return data;
   }
   
 
   // D e l e t e   T a s k
   const deleteTask = async (thatTaskId) => {
-    // console.log("delete", id)
     await fetch(`http://localhost:5000/tasks/${thatTaskId}`, {
       method: "DELETE",
     })
@@ -80,8 +74,6 @@ function App() {
 
   return (
     <div className='container'>
-      {/* <h1>Hello From React</h1>
-      <h2>Hello {x ? 'Joshua' : name}</h2> */}
       <Header title={'Task Tracker'} onToggleAddTask={() => setShowTaskForm(!showTaskForm)} showTaskForm={showTaskForm}/>
 
       {showTaskForm && <AddTask onAdd={addTask} onToggleAddTask={onToggleAddTask} showTaskForm={showTaskForm}/>}
