@@ -110,7 +110,7 @@ body {
   height: 20px;
 }
 
-footer {
+footer, .about {
   margin-top: 30px;
   text-align: center;
 }

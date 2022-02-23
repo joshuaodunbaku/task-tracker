@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import AddTask from './components/AddTask';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Footer from './components/Footer';
+import About from './components/About';
 
 function App() {
   // const name = 'Bobby';
@@ -103,11 +106,20 @@ function App() {
       {/* <h1>Hello From React</h1>
       <h2>Hello {x ? 'Joshua' : name}</h2> */}
       <Header title={'Task Tracker'} onToggleAddTask={() => setShowTaskForm(!showTaskForm)} showTaskForm={showTaskForm}/>
+        
+      <Routes>
+        <Route path="/" element={
+        <>
+            {showTaskForm && <AddTask onAdd={addTask} onToggleAddTask={onToggleAddTask} showTaskForm={showTaskForm}/>}
+              
+            {loading ? <div className="spinner-border"></div> : <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} loading={loading}/>}
+        </>
+         } />
 
-      {showTaskForm && <AddTask onAdd={addTask} onToggleAddTask={onToggleAddTask} showTaskForm={showTaskForm}/>}
-      
-      {loading ? <div className="spinner-border"></div> : <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} loading={loading}/>}
-    </div>
+        <Route path="about" element={<About />} />
+      </Routes>
+      <Footer />
+  </div>
   );
 }
 
